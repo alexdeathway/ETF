@@ -1,5 +1,6 @@
+from pyexpat import model
 from django.db import models
-from django.
+#from django
 
 # Create your models here.
 
@@ -11,6 +12,11 @@ class Event(models.Model):
         return self.name
 
 class Ticket(models.Model):
+    ticket_type_choices=(
+        ("Normal","Normal"),
+        ("Standard","Standard"),
+        ("VIP","VIP")
+    )
     event=models.OneToOneField(Event, on_delete=models.CASCADE)
     price=models.PositiveIntegerField(max_length=6)
-    ticket_type=
+    ticket_type=model

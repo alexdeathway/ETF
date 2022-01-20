@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from users.views import UserSignupView
 from .views import Home
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth.views import (
                                         LoginView,
                                         LogoutView,
@@ -38,3 +40,5 @@ urlpatterns = [
     path('reset-password-complete/',PasswordResetCompleteView.as_view(),name="password_reset_complete"),
     path('event/',include("events.urls",namespace="events")),
 ]
+if settings.DEBUG:
+    urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
