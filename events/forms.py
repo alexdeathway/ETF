@@ -1,26 +1,50 @@
-from django.forms import ModelForm
-
+import re
+from django.forms import ModelForm,forms
+from events.models import Event ,TicketType ,Ticket
 
 class EventCreationForm(ModelForm):
     class Meta:
-        
-        db_table = ''
-        managed = True
-        verbose_name = 'ModelName'
-        verbose_name_plural = 'ModelNames'
+        model=Event
+        # verbose_name = 'Event'
+        # verbose_name_plural = 'Events'
 
-class EventTicketTypeCreationForm(ModelForm):
-    class Meta:
-        
-        db_table = ''
-        managed = True
-        verbose_name = 'ModelName'
-        verbose_name_plural = 'ModelNames'
+        fields=[
+            "name",
+            "code",
+            "description",
+            "cover",
+        ]
 
-class EventTicketBookingForm(ModelForm):
+        def clean_code(self):
+            code= self.cleaned_data['code_name']
+            if not re.match(r'^[0-9a-zA-Z]*$',code):
+                    raise forms.ValidationError("Sorry , you can only have alphanumeric in code.") 
+            return code
+
+class TicketTypeCreationForm(ModelForm):
     class Meta:
-        
-        db_table = ''
-        managed = True
-        verbose_name = 'ModelName'
-        verbose_name_plural = 'ModelNames'        
+        model=TicketType
+        verbose_name = 'ticket type'
+        verbose_name_plural = 'ticket types'
+
+        fields=[
+                "event",
+                "price",
+                "type",
+                "limit",
+            ]
+
+
+class TicketBookingForm(ModelForm):
+    
+    class Meta:
+        model=Ticket
+        verbose_name = 'event ticket type'
+        verbose_name_plural = 'event ticket types'
+
+        fields=[
+                "name",
+                "email",
+                "type",
+                "amount",
+            ]        
