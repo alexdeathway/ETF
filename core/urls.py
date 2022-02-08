@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from users.views import UserSignupView
 from .views import Home
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth.views import (
                                         LoginView,
                                         LogoutView,
@@ -28,7 +30,7 @@ from django.contrib.auth.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('',Home.as_view(),name="home"),
+    path('',Home.as_view(),name="home"),
     path('login/',LoginView.as_view(),name="login"),
     path('logout/',LogoutView.as_view(),name="logout"),
     path('signup/',UserSignupView.as_view(),name="signup"),
@@ -36,5 +38,7 @@ urlpatterns = [
     path('reset-password-done/',PasswordResetDoneView.as_view(),name="password_reset_done"),
     path('reset-password-confirm/<uidb64>/<token>/',PasswordResetConfirmView.as_view(),name="password_reset_confirm"),
     path('reset-password-complete/',PasswordResetCompleteView.as_view(),name="password_reset_complete"),
-    path('event/',include("events.urls",namespace="events")),
+    path('events/',include("events.urls",namespace="events")),
 ]
+if settings.DEBUG:
+    urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

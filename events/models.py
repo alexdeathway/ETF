@@ -1,9 +1,32 @@
 from django.db import models
+#from django
 
-# Create your models here.
 
-class EventModel(models.Model):
-    name=models.CharField( max_length=20)
+class Event(models.Model):
+    name=models.CharField(max_length=20)
+    code=models.CharField(max_length=20,unique=True)
+    description=models.CharField(max_length=50)
+    cover=models.ImageField(upload_to="Event Cover", height_field=None, width_field=None, max_length=None)
 
     def __str__(self):
-        return self.name
+        return self.code
+
+class TicketType(models.Model):    
+    event=models.ForeignKey(Event, on_delete=models.CASCADE)
+    price=models.PositiveIntegerField()
+    type=models.CharField(max_length=50)
+    limit=models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{{self.type}} type of ticket for {{self.event}}"
+
+
+class Ticket(models.Model):
+    name=models.CharField( max_length=50)
+    email=models.EmailField(max_length=20)
+    type=models.ForeignKey(TicketType, on_delete=models.CASCADE)
+    amount=models.PositiveIntegerField()
+    unique_id=None
+
+    def __str__(self):
+        return f"{{self.email}} booked {{self.type}} ticket for {{self.event}}"

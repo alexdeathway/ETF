@@ -9,6 +9,7 @@
 <meta name="keywords" content="">
 -->
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  {% comment %} <linl href="{% static 'css/style.css' %}" rel="stylesheet"> {% endcomment %}
 </head>
 <style>
     header{
@@ -64,7 +65,7 @@
         </div>
         <div class="px-8">
         <a  href="{% url 'logout' %}" >
-        <button class="inline-flex items-center bg-red-500 text-red-300 border-0 py-1 px-3  focus:outline-none hover:bg-red-700 text-red-300 rounded text-base mt-4 md:mt-0">Logout
+        <button class="inline-flex items-center bg-red-500  border-0 py-1 px-3  focus:outline-none hover:bg-red-700 text-red-300 rounded text-base mt-4 md:mt-0">Logout
               <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
               <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
