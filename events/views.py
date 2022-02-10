@@ -3,8 +3,13 @@ from django.urls import reverse
 from events.forms import EventCreationForm ,TicketTypeCreationForm,TicketBookingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (
-                                    CreateView,
+                                ListView,    
+                                CreateView,
+                                DetailView,
                                 )  
+
+class EventListView(ListView):
+    pass
 
 class EventCreateView(LoginRequiredMixin,CreateView):
 
@@ -14,6 +19,9 @@ class EventCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         reverse('home')
 
+class EventDetailView(DetailView):
+    pass
+
 class TicketTypeCreateView(LoginRequiredMixin,CreateView):
 
     template_name="events/tickettype_create.html"
@@ -22,6 +30,9 @@ class TicketTypeCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         reverse('home')
 
+
+class TicketListView(ListView):
+    pass
 
 class TicketBookingView(LoginRequiredMixin,CreateView):
 

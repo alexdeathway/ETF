@@ -2,15 +2,33 @@
 {% load tailwind_filters %}
 
 {% block body %}
-<div class="min-h-screen flex  justify-center bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
-    <form method="post">
+<div class="max-h-screen flex  justify-center bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+<div class="w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div class="px-6 py-4">
+        <h2 class="text-3xl font-bold text-center text-gray-700 dark:text-white">Brand</h2>
 
-{% csrf_token %}
-{{ form|crispy }}
-<button>login </button>
-<hr/>
-<a href='{% url 'reset-password' %}'>Forgot password? </a>
+        <h3 class="mt-1 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Welcome Back</h3>
 
-</form>
+        <p class="mt-1 text-center text-gray-500 dark:text-gray-400">Login or create account</p>
+
+        <form method="POST">
+            
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <div class="flex items-center justify-between mt-4">
+                <a href="{% url 'reset-password' %}" class="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500">Forget Password?</a>
+
+                <button class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded hover:bg-gray-600 focus:outline-none" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
+        <span class="text-sm text-gray-600 dark:text-gray-200">Don't have an account? </span>
+
+        <a href="{% url 'signup' %}" class="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline">Register</a>
+    </div>
+</div>
 </div>
 {% endblock body %}
