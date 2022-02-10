@@ -39,6 +39,7 @@ urlpatterns = [
     path('reset-password-confirm/<uidb64>/<token>/',PasswordResetConfirmView.as_view(),name="password_reset_confirm"),
     path('reset-password-complete/',PasswordResetCompleteView.as_view(),name="password_reset_complete"),
     path('events/',include("events.urls",namespace="events")),
+    path('users/',include("users.urls",namespace="users")),
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

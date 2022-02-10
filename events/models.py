@@ -12,7 +12,7 @@ class Event(models.Model):
         return self.code
 
 class TicketType(models.Model):    
-    event=models.ForeignKey(Event, on_delete=models.CASCADE)
+    event=models.ForeignKey(Event, on_delete=models.CASCADE,related_name="TicketType_Event")
     price=models.PositiveIntegerField()
     type=models.CharField(max_length=50)
     limit=models.PositiveIntegerField()
