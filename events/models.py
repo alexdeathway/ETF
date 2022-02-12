@@ -18,7 +18,7 @@ class TicketType(models.Model):
     limit=models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{{self.type}} type of ticket for {{self.event}}"
+        return f"{self.type} type of ticket for {self.event}"
 
 
 class Ticket(models.Model):
