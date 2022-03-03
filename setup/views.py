@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse
 from users.forms import CustomUserCreationForm
-from django.views.generic import CreateView
+from django.views.generic import CreateView,TemplateView
 
 class AdminSignupView(CreateView):
-    template_name="registration/signup.html"
+    template_name="setup/admin_signup.html"
     form_class=CustomUserCreationForm
 
     def form_valid(self,form):
@@ -15,3 +15,6 @@ class AdminSignupView(CreateView):
     def get_success_url(self):
         return reverse("home")
 
+
+class AdminEventCreateView(TemplateView):
+      template_name="setup/admin_create_event.html"
