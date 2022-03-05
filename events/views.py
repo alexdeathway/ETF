@@ -11,9 +11,12 @@ from django.views.generic import (
                                 )  
 
 from events.models import Event
+from setup.mixins import SetupCompletedRequiredMixin
 
 class EventListView(ListView):
-    pass
+    template_name="events/event_list.html"
+    model=Event
+    context_object_name="events"
 
 class EventCreateView(LoginRequiredMixin,CreateView):
 

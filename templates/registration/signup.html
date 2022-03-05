@@ -25,7 +25,7 @@
 				</div>
 
 				<div class="mt-8">
-					<form>
+					<form method="POST">
 						{% csrf_token %}
 						{{ form|crispy }}
 
