@@ -7,6 +7,10 @@ class EventCreationForm(ModelForm):
         model=Event
         # verbose_name = 'Event'
         # verbose_name_plural = 'Events'
+        
+        label={
+            "name":"Event name"
+        }
 
         fields=[
             "name",
@@ -41,6 +45,10 @@ class TicketBookingForm(ModelForm):
         model=Ticket
         verbose_name = 'event ticket type'
         verbose_name_plural = 'event ticket types'
+
+        labels={
+            "name": "Ticket type",
+        }
 
         fields=[
                 "name",
