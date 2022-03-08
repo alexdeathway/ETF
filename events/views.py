@@ -15,8 +15,7 @@ from events.models import Event
 
 class EventListView(ListView):
     template_name="events/event_list.html"
-    model=Event
-    context_object_name="events"
+    queryset=Event.objects.filter(is_live=True)
 
 class EventCreateView(LoginRequiredMixin,CreateView):
 
@@ -49,6 +48,12 @@ class EventDetailView(DetailView):
 class TicketTypeCreateView(LoginRequiredMixin,CreateView):
     template_name="events/tickettype_create.html"
     form_class=TicketTypeCreationForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return reverse('home')
     
     def get_success_url(self):
         reverse('home')
@@ -62,6 +67,13 @@ class TicketBookingView(LoginRequiredMixin,CreateView):
 
     template_name="events/ticket_booking.html"
     form_class=TicketBookingForm
+
+    def form_valid(self,form):
+        ticket = form.save(commit=False)
+        ticket.owner=self.request.user
+        ticket.save()
+
+        return super(TicketBookingView,self).form_valid(form)
     
     def get_success_url(self):
         reverse('home')        
