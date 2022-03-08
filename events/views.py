@@ -11,7 +11,7 @@ from django.views.generic import (
                                 )  
 
 from events.models import Event
-from setup.mixins import SetupCompletedRequiredMixin
+#from setup.mixins import SetupCompletedRequiredMixin
 
 class EventListView(ListView):
     template_name="events/event_list.html"
@@ -23,6 +23,13 @@ class EventCreateView(LoginRequiredMixin,CreateView):
     template_name="events/event_create.html"
     form_class=EventCreationForm
     
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return reverse('home')    
+    
+
     def get_success_url(self):
         reverse('home')
 
