@@ -33,4 +33,4 @@ class Ticket(models.Model):
     unique_id=None
 
     def __str__(self):
-        return f"{{self.owner}} booked {{self.type}} ticket for {{self.event}}"
+        return f"{self.owner} booked {self.type} ticket for {self.event}"

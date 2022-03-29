@@ -28,7 +28,6 @@ class EventCreateView(LoginRequiredMixin,CreateView):
         else:
             return reverse('home')    
     
-
     def get_success_url(self):
         reverse('home')
 
@@ -49,14 +48,16 @@ class TicketTypeCreateView(LoginRequiredMixin,CreateView):
     template_name="events/tickettype_create.html"
     form_class=TicketTypeCreationForm
 
+    def form_valid(self,form):
+        form.save()
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_superuser:
             return super().dispatch(request, *args, **kwargs)
         else:
             return reverse('home')
     
-    def get_success_url(self):
-        reverse('home')
+   
 
 
 class TicketListView(ListView):

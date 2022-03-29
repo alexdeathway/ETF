@@ -16,7 +16,6 @@ class AdminSignupView(SuperUserSignUpAccessMixin,CreateView):
    
         return super(AdminSignupView,self).form_valid(form)
 
-
     def get_success_url(self):
         return reverse("setup:admin_event_create")
 
