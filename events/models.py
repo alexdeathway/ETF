@@ -7,9 +7,14 @@ User=get_user_model()
 class Event(models.Model):
     name=models.CharField(max_length=20)
     code=models.CharField(max_length=20,unique=True)
-    description=models.CharField(max_length=50)
+    description=models.TextField()
     cover=models.ImageField(upload_to="Event Cover", height_field=None, width_field=None, max_length=None)
     is_live=models.BooleanField(default=False)
+    # available_seats=models.PositiveIntegerField()
+    #this is to show if seats are available or not
+    
+    # @property
+    # def 
 
     def __str__(self):
         return self.code

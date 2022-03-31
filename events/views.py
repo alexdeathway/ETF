@@ -11,22 +11,22 @@ from django.views.generic import (
                                 )  
 
 from events.models import Event
-#from setup.mixins import SetupCompletedRequiredMixin
+from events.mixins import SuperUserAccessMixin
 
 class EventListView(ListView):
     template_name="events/event_list.html"
-    queryset=Event.objects.filter(is_live=True)
+    model=Event
 
-class EventCreateView(LoginRequiredMixin,CreateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["events"] =Event.objects.filter(is_live=True)
+        return context
+    
+
+class EventCreateView(SuperUserAccessMixin,CreateView):
 
     template_name="events/event_create.html"
     form_class=EventCreationForm
-    
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_superuser:
-            return super().dispatch(request, *args, **kwargs)
-        else:
-            return reverse('home')    
     
     def get_success_url(self):
         reverse('home')
@@ -44,21 +44,12 @@ class EventDetailView(DetailView):
         return context
 
 
-class TicketTypeCreateView(LoginRequiredMixin,CreateView):
+class TicketTypeCreateView(SuperUserAccessMixin,CreateView):
     template_name="events/tickettype_create.html"
     form_class=TicketTypeCreationForm
 
     def form_valid(self,form):
         form.save()
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_superuser:
-            return super().dispatch(request, *args, **kwargs)
-        else:
-            return reverse('home')
-    
-   
-
 
 class TicketListView(ListView):
     #handled  by EventDetailView
