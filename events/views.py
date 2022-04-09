@@ -50,6 +50,8 @@ class TicketTypeCreateView(SuperUserAccessMixin,CreateView):
 
     def form_valid(self,form):
         form.save()
+        
+        return super(TicketTypeCreateView,self).form_valid(form)
 
 class TicketListView(ListView):
     #handled  by EventDetailView
