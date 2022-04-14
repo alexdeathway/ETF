@@ -58,16 +58,29 @@ class TicketListView(ListView):
     pass
 
 class TicketBookingView(LoginRequiredMixin,CreateView):
+    
+    """
+    Using TicketType slug to access the ticket type.
+    """
 
     template_name="events/ticket_booking.html"
     form_class=TicketBookingForm
 
+    def get_form_kwargs(self,**kwargs):
+        kwargs=super(TicketBookingView,self).get_form_kwargs(**kwargs)
+        kwargs.update({
+            #for initial value in form
+            "ticket_type":self.kwargs['ticket_slug']
+        })
+        return kwargs
+
     def form_valid(self,form):
         ticket = form.save(commit=False)
         ticket.owner=self.request.user
+        ticket.email=self.request.user.email
         ticket.save()
-
         return super(TicketBookingView,self).form_valid(form)
+        
     
     def get_success_url(self):
         reverse('home')        

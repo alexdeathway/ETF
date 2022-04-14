@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import aggregates,Sum
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
+from django.core.validators import MaxValueValidator
 
 User=get_user_model()
 
@@ -21,8 +23,9 @@ class TicketType(models.Model):
     price=models.PositiveIntegerField()
     type=models.CharField(max_length=50)
     limit=models.PositiveIntegerField()
+    slug=models.SlugField(blank=True,null=True)
 
-    #this is to show  no. of available seats     
+    #This is to show no. of available seats     
     @property
     def available_ticket(self):
         booked_ticket=Ticket.objects.filter(type=self).aggregate(Sum('amount'))['amount__sum']
@@ -30,13 +33,19 @@ class TicketType(models.Model):
             return self.limit - booked_ticket  
         return self.limit
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f"{self.event} "+self.type)
+
+        super(TicketType, self).save(*args, **kwargs)
+
+    
     def __str__(self):
         return f"{self.type} type of ticket for {self.event}"
 
 
 class Ticket(models.Model):
     owner=models.ForeignKey(User,on_delete=models.CASCADE,related_name="Ticket_User")
-    name=models.CharField( max_length=50)
     email=models.EmailField(max_length=50)
     type=models.ForeignKey(TicketType, on_delete=models.CASCADE)
     event=models.ForeignKey(Event, on_delete=models.CASCADE,related_name="Ticket_Event")

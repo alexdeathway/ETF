@@ -14,5 +14,5 @@ urlpatterns = [
     path("create/",EventCreateView.as_view(),name='eventcreate'),
     path("detail/<slug:code>/",EventDetailView.as_view(),name='eventdetail'),
     path("ticket-type-create/",TicketTypeCreateView.as_view(),name='tickettypecreate'),
-    path("ticket-booking/",TicketBookingView.as_view(),name='ticketbooking'),
+    path("ticket-booking/<slug:ticket_slug>",TicketBookingView.as_view(),name='ticketbooking'),
 ]

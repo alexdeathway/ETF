@@ -1,16 +1,14 @@
-from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 
-class SuperUserAccessMixin(AccessMixin):
+class SuperUserAccessMixin(LoginRequiredMixin,UserPassesTestMixin):
     """
     check is user is superuser.  
     """
+    def test_func(self):
+        return self.request.user.is_superuser
+    
 
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_superuser:  
-            return super().dispatch(request, *args, **kwargs)
-        elif request.user.is_authenticated:#if user is authenticated but isn't superuser
-              return  redirect('home')
-        else:
-            return redirect('login')     
+
+# class TicketA                 
