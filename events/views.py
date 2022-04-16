@@ -29,7 +29,7 @@ class EventCreateView(SuperUserAccessMixin,CreateView):
     form_class=EventCreationForm
     
     def get_success_url(self):
-        reverse('home')
+        return reverse('home')
 
 class EventDetailView(DetailView):
       template_name="events/event_detail.html"
@@ -70,7 +70,7 @@ class TicketBookingView(LoginRequiredMixin,CreateView):
         kwargs=super(TicketBookingView,self).get_form_kwargs(**kwargs)
         kwargs.update({
             #for initial value in form
-            "ticket_type":self.kwargs['ticket_slug']
+            "ticket_type":self.kwargs.get('ticket_slug')
         })
         return kwargs
 
@@ -83,4 +83,4 @@ class TicketBookingView(LoginRequiredMixin,CreateView):
         
     
     def get_success_url(self):
-        reverse('home')        
+        return reverse('home')        

@@ -17,9 +17,9 @@ class EventCreationForm(ModelForm):
 
         fields=[
             "name",
+            "cover",
             "code",
             "description",
-            "cover",
         ]
 
         def clean_code(self):
@@ -62,15 +62,15 @@ class TicketBookingForm(ModelForm):
     
     class Meta:
         model=Ticket
-        verbose_name = 'event ticket type'
-        verbose_name_plural = 'event ticket types'
-
-        labels={
-            "amount": "No of tickets:",
-        }
+        verbose_name = 'Event ticket type'
+        verbose_name_plural = 'Event ticket types'
 
         fields=[
                 "event",
                 "type",
                 "amount",
             ]        
+        
+        labels={
+            "amount": "No of tickets:",
+        }

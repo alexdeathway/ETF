@@ -3,14 +3,15 @@
 
 {% block body %}
 <div class="min-h-screen flex  justify-center bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
-    <form method="post">
+    <form  method="post" enctype="multipart/form-data">
 
 {% csrf_token %}
 {{ form|crispy }}
-<button>login </button>
-<hr/>
-<a href='{% url 'reset-password' %}'>Forgot password? </a>
-
+<hr>
+<button type="submit" value="Submit"
+  class="text-white my-4 py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+  Submit
+</button>
 </form>
 </div>
 {% endblock body %}
