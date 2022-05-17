@@ -11,20 +11,25 @@ from django.views.generic import (
                                 )  
 
 from events.models import Event
-from setup.mixins import SetupCompletedRequiredMixin
+from events.mixins import SuperUserAccessMixin
 
 class EventListView(ListView):
     template_name="events/event_list.html"
     model=Event
-    context_object_name="events"
 
-class EventCreateView(LoginRequiredMixin,CreateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["events"] =Event.objects.filter(is_live=True)
+        return context
+    
+
+class EventCreateView(SuperUserAccessMixin,CreateView):
 
     template_name="events/event_create.html"
     form_class=EventCreationForm
     
     def get_success_url(self):
-        reverse('home')
+        return reverse('home')
 
 class EventDetailView(DetailView):
       template_name="events/event_detail.html"
@@ -39,22 +44,43 @@ class EventDetailView(DetailView):
         return context
 
 
-class TicketTypeCreateView(LoginRequiredMixin,CreateView):
+class TicketTypeCreateView(SuperUserAccessMixin,CreateView):
     template_name="events/tickettype_create.html"
     form_class=TicketTypeCreationForm
-    
-    def get_success_url(self):
-        reverse('home')
 
+    def form_valid(self,form):
+        form.save()
+        
+        return super(TicketTypeCreateView,self).form_valid(form)
 
 class TicketListView(ListView):
     #handled  by EventDetailView
     pass
 
 class TicketBookingView(LoginRequiredMixin,CreateView):
+    
+    """
+    Using TicketType slug to access the ticket type.
+    """
 
     template_name="events/ticket_booking.html"
     form_class=TicketBookingForm
+
+    def get_form_kwargs(self,**kwargs):
+        kwargs=super(TicketBookingView,self).get_form_kwargs(**kwargs)
+        kwargs.update({
+            #for initial value in form
+            "ticket_type":self.kwargs.get('ticket_slug')
+        })
+        return kwargs
+
+    def form_valid(self,form):
+        ticket = form.save(commit=False)
+        ticket.owner=self.request.user
+        ticket.email=self.request.user.email
+        ticket.save()
+        return super(TicketBookingView,self).form_valid(form)
+        
     
     def get_success_url(self):
-        reverse('home')        
+        return reverse('home')        
