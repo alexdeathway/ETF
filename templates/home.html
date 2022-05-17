@@ -4,20 +4,22 @@
 
 <section class="text-gray-600 body-font">
 
-  <div class="flex w-full max-w-sm pd-20 mx-auto border-2 overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+  <div class=" flex m-4  overflow-hidden w-full max-w-sm pd-20 mx-auto border-2  bg-white rounded-lg shadow-md dark:bg-gray-800">
     <div class="w-2 bg-gray-800 dark:bg-gray-900"></div>
   
     <div class="flex items-center px-2 py-3">
-        <img class="object-cover w-10 h-10 rounded-full" alt="User avatar" src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200">
+        <img class="object-cover w-10 h-10 rounded-full" alt="event cover" src="{{event.cover.url}}">
         
-        <div class="mx-3">
-            <p class="text-gray-600 dark:text-gray-200">Mars Civil events tickets on sale</p>
+        <div class="mx-1">
+            <p class="text-gray-600 dark:text-gray-200"> {{event.name}} tickets on sale</p>
         </div>
     </div>
     <div class="flex items-center justify-between px-4 py-2 bg-gray-700">
-      <h1 class="text-lg font-bold p-2 text-white">$129</h1>
+      {% comment %} <h1 class="text-lg font-bold p-2 text-white">$129</h1> {% endcomment %}
+      <a href="{% url 'events:eventdetail' event.code %}">
       <button class="px-2 py-1 text-xs font-semibold text-gray-700 uppercase transition-colors duration-200 transform bg-white rounded hover:bg-gray-200 focus:bg-gray-400 focus:outline-none">Book</button>
-  </div>
+      </a>
+    </div>
   
   </div>
   
