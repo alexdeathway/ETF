@@ -1,3 +1,4 @@
+import folium
 from re import template
 from django.forms import SlugField
 from django.shortcuts import render
@@ -36,11 +37,16 @@ class EventDetailView(DetailView):
       model=Event
       slug_url_kwarg="code"
       slug_field="code"
+      context_object_name="event"
 
       def get_context_data(self,**kwargs):
         context=super(EventDetailView,self).get_context_data(**kwargs)
-        tickets=self.get_object().TicketType_Event.all()              
+        tickets=self.get_object().TicketType_Event.all()
+        event_coords=(self.get_object().location_latitude,self.get_object().location_longitude)
+        event_map = folium.Map(location=event_coords, zoom_start=9)   
+        folium.Marker(event_coords,popup=self.get_object().address).add_to(event_map)        
         context["tickets"]=tickets
+        context["map"]=event_map._repr_html_()
         return context
 
 

@@ -12,6 +12,7 @@ class AdminSignupView(SuperUserSignUpAccessMixin,CreateView):
     def form_valid(self,form):
         user=form.save(commit=False)
         user.is_superuser=True
+        user.is_staff=True
         user.save()
    
         return super(AdminSignupView,self).form_valid(form)

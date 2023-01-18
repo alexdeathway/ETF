@@ -7,13 +7,16 @@ from django.core.validators import MaxValueValidator
 User=get_user_model()
 
 class Event(models.Model):
-    name=models.CharField(max_length=20)
+    name=models.CharField(max_length=50)
     code=models.CharField(max_length=20,unique=True)
     description=models.TextField()
     cover=models.ImageField(upload_to="Event Cover", height_field=None, width_field=None, max_length=None)
     is_live=models.BooleanField(default=False)
-   
-            
+    date=models.DateField(auto_now=False, auto_now_add=False)
+    time=models.TimeField( auto_now=False, auto_now_add=False)
+    address=models.CharField(max_length=50)
+    location_latitude=models.FloatField()
+    location_longitude=models.FloatField()
 
     def __str__(self):
         return self.code

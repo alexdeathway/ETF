@@ -20,6 +20,11 @@ class EventCreationForm(ModelForm):
             "cover",
             "code",
             "description",
+            "date",
+            "time",
+            "address",
+            "location_latitude",
+            "location_longitude",
         ]
 
         def clean_code(self):
