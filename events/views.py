@@ -11,7 +11,7 @@ from django.views.generic import (
                                 DetailView,
                                 )  
 
-from events.models import Event
+from events.models import Event,TicketType
 from events.mixins import SuperUserAccessMixin
 
 class EventListView(ListView):
@@ -42,6 +42,7 @@ class EventDetailView(DetailView):
       def get_context_data(self,**kwargs):
         context=super(EventDetailView,self).get_context_data(**kwargs)
         tickets=self.get_object().TicketType_Event.all()
+        tickets=TicketType.objects.filter(event=self.get_object())
         event_coords=(self.get_object().location_latitude,self.get_object().location_longitude)
         event_map = folium.Map(location=event_coords, zoom_start=9)   
         folium.Marker(event_coords,popup=self.get_object().address).add_to(event_map)        
@@ -55,9 +56,11 @@ class TicketTypeCreateView(SuperUserAccessMixin,CreateView):
     form_class=TicketTypeCreationForm
 
     def form_valid(self,form):
-        form.save()
-        
+        form.save() 
         return super(TicketTypeCreateView,self).form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('events:eventlist')
 
 class TicketListView(ListView):
     #handled  by EventDetailView
@@ -89,4 +92,9 @@ class TicketBookingView(LoginRequiredMixin,CreateView):
         
     
     def get_success_url(self):
-        return reverse('home')        
+        return reverse('home')  
+
+    def dispatch(self, request, *args, **kwargs):
+
+        return super().dispatch(request, *args, **kwargs)
+          

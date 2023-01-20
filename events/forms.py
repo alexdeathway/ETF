@@ -41,9 +41,9 @@ class TicketTypeCreationForm(ModelForm):
 
         fields=[
                 "event",
-                "price",
                 "type",
-                "limit",
+                "price",
+                "amount",
             ]
 
 
@@ -71,11 +71,14 @@ class TicketBookingForm(ModelForm):
         verbose_name_plural = 'Event ticket types'
 
         fields=[
-                "event",
-                "type",
-                "amount",
+                # "event",
+                # "type",
+                # "amount",
             ]        
-        
+        exclude=(
+            "event",
+            "type",
+        )
         labels={
             "amount": "No of tickets:",
         }

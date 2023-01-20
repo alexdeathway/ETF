@@ -25,7 +25,7 @@ class TicketType(models.Model):
     event=models.ForeignKey(Event, on_delete=models.CASCADE,related_name="TicketType_Event")
     price=models.PositiveIntegerField()
     type=models.CharField(max_length=50)
-    limit=models.PositiveIntegerField()
+    amount=models.PositiveIntegerField()
     slug=models.SlugField(blank=True,null=True)
 
     #This is to show no. of available seats     
@@ -33,8 +33,8 @@ class TicketType(models.Model):
     def available_ticket(self):
         booked_ticket=Ticket.objects.filter(type=self).aggregate(Sum('amount'))['amount__sum']
         if booked_ticket is not None:
-            return self.limit - booked_ticket  
-        return self.limit
+            return self.amount - booked_ticket  
+        return self.amount
     
     def save(self, *args, **kwargs):
         if not self.slug:

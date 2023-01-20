@@ -7,10 +7,9 @@
 
 {% csrf_token %}
 {{ form|crispy }}
-<button>login </button>
-<hr/>
-<a href='{% url 'reset-password' %}'>Forgot password? </a>
-
+<div class="flex items-center justify-between mt-4">
+    <button class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded hover:bg-gray-600 focus:outline-none" type="submit">Submit</button>
+</div>
 </form>
 </div>
 {% endblock body %}
