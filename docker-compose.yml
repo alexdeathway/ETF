@@ -8,7 +8,10 @@ volumes:
 
 services:
     django: &django
-        image: django:onbuild
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: core:development
         command: /app/docker/start.sh server
         depends_on:
             - postgres
