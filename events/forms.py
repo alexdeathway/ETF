@@ -8,6 +8,7 @@ from django import forms
 class EventCreationForm(ModelForm):
     class Meta:
         model=Event
+        date=forms.DateField(widget=forms.TextInput(attrs={'type':'date'}))
         # verbose_name = 'Event'
         # verbose_name_plural = 'Events'
         
