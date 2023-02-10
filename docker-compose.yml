@@ -5,6 +5,10 @@ volumes:
         name: app_data
     app_broker:
         name: app_broker
+    static_files:
+        name: static_files
+    media_files:
+        name: media_files
 
 services:
     django: &django
@@ -19,6 +23,9 @@ services:
             - .env
         ports:
             - 8000:8000
+        volumes:
+            - static_files:/app/static
+            - media_files:/app/media
 
     postgres:
         image: postgres:13.3-alpine
@@ -54,3 +61,16 @@ services:
         ports:
             - 8002:8000
         command: /app/docker/start.sh beat
+
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        image: nginx:development
+        ports:
+            - 80:80
+        depends_on:
+            - django
+        volumes:
+            - static_files:/app/static:ro
+            - media_files:/app/media:ro
