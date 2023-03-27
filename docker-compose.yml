@@ -29,6 +29,7 @@ services:
 
     postgres:
         image: postgres:13.3-alpine
+        hostname: etf-custom-postgres
         volumes:
             - app_data:/var/lib/postgresql/data
         environment:
@@ -36,31 +37,6 @@ services:
             POSTGRES_USER: etfpostgres
             POSTGRES_DB: etfpostgres
 
-    redis:
-        image: redis:6.2.5-alpine
-        command: redis-server --appendonly yes
-        volumes:
-            - app_broker:/var/lib/redis/data
-
-    celery:
-        <<: *django
-        depends_on:
-            - django
-            - postgres
-            - redis
-        ports:
-            - 8001:8000
-        command: /app/docker/start.sh worker
-
-    beat:
-        <<: *django
-        depends_on:
-            - django
-            - postgres
-            - redis
-        ports:
-            - 8002:8000
-        command: /app/docker/start.sh beat
 
     nginx:
         build:

@@ -46,11 +46,6 @@ until postgres_ready; do
 done
 >&2 echo "PostgreSQL is available"
 
-until redis_ready; do
-  >&2 echo "Waiting for Redis to become available..."
-  sleep 5
-done
->&2 echo "Redis is available"
 
 python3 manage.py collectstatic --noinput
 python3 manage.py makemigrations users

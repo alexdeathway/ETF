@@ -10,7 +10,7 @@ fi
 PROCESS_TYPE=$1
 
 if [ "$PROCESS_TYPE" = "server" ]; then
-    if [ "$DJANGO_DEBUG" = "true" ]; then
+    if [ "$DEBUG" = "True" ]; then
         gunicorn \
             --reload \
             --bind 0.0.0.0:8000 \
@@ -30,21 +30,4 @@ if [ "$PROCESS_TYPE" = "server" ]; then
             --error-logfile "-" \
             core.wsgi
     fi
-elif [ "$PROCESS_TYPE" = "beat" ]; then
-    celery \
-        --app core.celery_app \
-        beat \
-        --loglevel INFO \
-        --scheduler django_celery_beat.schedulers:DatabaseScheduler
-elif [ "$PROCESS_TYPE" = "flower" ]; then
-    celery \
-        --app core.celery_app \
-        flower \
-        --basic_auth="${CELERY_FLOWER_USER}:${CELERY_FLOWER_PASSWORD}" \
-        --loglevel INFO
-elif [ "$PROCESS_TYPE" = "worker" ]; then
-    celery \
-        --app core.celery_app \
-        worker \
-        --loglevel INFO
 fi
