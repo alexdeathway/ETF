@@ -2,13 +2,13 @@ version: "3.8"
 
 volumes:
     app_data:
-        name: app_data
+        name: etf_app_data
     app_broker:
-        name: app_broker
+        name: etf_app_broker
     static_files:
-        name: static_files
+        name: etf_static_files
     media_files:
-        name: media_files
+        name: etf_media_files
 
 services:
     django: &django
@@ -24,6 +24,7 @@ services:
         ports:
             - 8000:8000
         volumes:
+            - .:/app
             - static_files:/app/static
             - media_files:/app/media
 

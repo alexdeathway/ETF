@@ -1,0 +1,53 @@
+version: "3.8"
+
+volumes:
+    app_data:
+        name: etf_app_data
+    app_broker:
+        name: etf_app_broker
+    static_files:
+        name: etf_static_files
+    media_files:
+        name: etf_media_files
+
+services:
+    django: &django
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: core:development
+        command: /app/docker/start.sh server
+        depends_on:
+            - postgres
+        env_file:
+            - .env
+        ports:
+            - 8000:8000
+        volumes:
+            
+            - static_files:/app/static
+            - media_files:/app/media
+
+    postgres:
+        image: postgres:13.3-alpine
+        hostname: etf-custom-postgres
+        volumes:
+            - app_data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: etfpostgres
+            POSTGRES_USER: etfpostgres
+            POSTGRES_DB: etfpostgres
+
+
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        image: nginx:development
+        ports:
+            - 80:80
+        depends_on:
+            - django
+        volumes:
+            - static_files:/app/static:ro
+            - media_files:/app/media:ro
